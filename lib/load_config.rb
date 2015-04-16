@@ -23,7 +23,6 @@ class Config
   FALSE_VALUES = ['no', 'false']
 
   def initialize(file_path, overrides)
-    super()
     @file_path = file_path
     @current_group = nil
     @overrides = overrides.map{ |o| o.to_s }
