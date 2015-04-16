@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift(File.expand_path('../lib', __FILE__))
 
 require 'load_config'
+require 'byebug'
 
 describe "general load_config functionality" do
   before :all do
