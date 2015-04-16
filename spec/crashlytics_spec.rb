@@ -1,3 +1,7 @@
+$LOAD_PATH.unshift(File.expand_path('../lib', __FILE__))
+
+require 'load_config'
+
 describe "general load_config functionality" do
   it "reads in a conf file" do
     CONFIG = load_config("./spec/files/settings.conf", ["ubuntu", :production])
