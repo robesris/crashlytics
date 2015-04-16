@@ -5,6 +5,13 @@ def load_config(file_path, overrides=[])
 end
 
 class Config < OpenStruct
+  GROUP =                    /^\s*\[(\w+)\]\s*$/
+  GENERIC =                  /^\s*(\D\w*)\s*=\s*(\S+)\s*$/
+  INTEGER =                  /^\d+$/
+  FLOAT =                    /^\d*\.\d+$/
+  SYMMETRIC_QUOTED_STRING =  /^\s*(\D\w*)\s*=\s*("')([^"']*)\2\s*$/
+  ASYMMETRIC_QUOTED_STRING = /^\s*(\D\w*)\s*=\s*“([^”]*)”\s*$/
+
   def initialize(file_path)
     super()
     @file_path = file_path
@@ -15,23 +22,23 @@ class Config < OpenStruct
   def parse
     File.read(@file_path).each_line do |line|
     case line
-      when /^\s*\[(\w+)\]\s*$/
+      when GROUP
         @current_group = OpenStruct.new
         self[$1.to_sym] = @current_group
-      when /^\s*(\D\w*)\s*=\s*(\S+)\s*$/
+      when GENERIC
         key = $1.to_sym
         value = $2.to_s
         case value
-        when /^\d+$/
+        when INTEGER
           value = value.to_i
-        when /^\d*\.\d+$/
+        when FLOAT
           value = value.to_f
         end
 
         @current_group[key] = value
-      when /^\s*(\D\w*)\s*=\s*("')([^"']*)\2\s*$/
+      when SYMMETRIC_QUOTED_STRING
         @current_group[$1.to_sym] = $3
-      when /^\s*(\D\w*)\s*=\s*“([^”]*)”\s*$/
+      when ASYMMETRIC_QUOTED_STRING
         @current_group[$1.to_sym] = $2
       end
     end
