@@ -9,7 +9,7 @@ class Config
     File.read(file_path).each_line do |line|
     case line
       when /\s*\[(\w+)\]\s*/
-        @data[$1] = {}
+        @data[$1.to_sym] = {}
       end
     end
   end
