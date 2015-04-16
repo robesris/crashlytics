@@ -27,8 +27,16 @@ describe "general load_config functionality" do
     # returns “hello there, ftp uploading”
     expect(CONFIG.ftp.name).to eq("hello there, ftp uploading")
   end
-# > CONFIG.http.params
-# returns [“array”, “of”, “values”]
+
+  it "returns an array of values" do
+    # > CONFIG.http.params
+    # returns [“array”, “of”, “values”]
+    expect(CONFIG.http.params).to be_kind_of(Array)
+    expect(CONFIG.http.params[0]).to eq("array")
+    expect(CONFIG.http.params[1]).to eq("of")
+    expect(CONFIG.http.params[2]).to eq("values")
+  end
+
 # > CONFIG.ftp.lastname
 # returns nil
 # > CONFIG.ftp.enabled
