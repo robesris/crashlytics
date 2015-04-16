@@ -1,3 +1,20 @@
 def load_config(file_path, overrides=[])
-  File.read(file_path)
+  Config.new(file_path)
+end
+
+class Config
+  def initialize(file_path)
+    @data = {}
+
+    File.read(file_path).each_line do |line|
+    case line
+      when /\s*\[(\w+)\]\s*/
+        @data[$1] = {}
+      end
+    end
+  end
+
+  def method_missing(method_name)
+    @data[method_name]
+  end
 end
