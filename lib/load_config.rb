@@ -18,16 +18,21 @@ class Config < OpenStruct
       when /^\s*\[(\w+)\]\s*$/
         @current_group = OpenStruct.new
         self[$1.to_sym] = @current_group
-      when /^\s*(\D\w*)\s*=\s*(\w+)\s*$/
+      when /^\s*(\D\w*)\s*=\s*(\S+)\s*$/
         key = $1.to_sym
-        value = $2
+        value = $2.to_s
         case value
         when /^\d+$/
           value = value.to_i
         when /^\d*\.\d+$/
           value = value.to_f
         end
+
         @current_group[key] = value
+      when /^\s*(\D\w*)\s*=\s*("')([^"']*)\2\s*$/
+        @current_group[$1.to_sym] = $3
+      when /^\s*(\D\w*)\s*=\s*“([^”]*)”\s*$/
+        @current_group[$1.to_sym] = $2
       end
     end
   end

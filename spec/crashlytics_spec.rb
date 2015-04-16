@@ -21,8 +21,12 @@ describe "general load_config functionality" do
     # returns 2147483648
     expect(CONFIG.common.paid_users_size_limit).to eq(2147483648)
   end
-# > CONFIG.ftp.name
-# returns “hello there, ftp uploading”
+
+  it "returns a string" do
+    # > CONFIG.ftp.name
+    # returns “hello there, ftp uploading”
+    expect(CONFIG.ftp.name).to eq("hello there, ftp uploading")
+  end
 # > CONFIG.http.params
 # returns [“array”, “of”, “values”]
 # > CONFIG.ftp.lastname
