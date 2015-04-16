@@ -11,6 +11,7 @@ class Config < OpenStruct
   FLOAT =                    /^\d*\.\d+$/
   SYMMETRIC_QUOTED_STRING =  /^\s*(\D\w*)\s*=\s*("')([^"']*)\2\s*$/
   ASYMMETRIC_QUOTED_STRING = /^\s*(\D\w*)\s*=\s*“([^”]*)”\s*$/
+  ARRAY =                    /^\s*(\D\w*)\s*=\s*(.*,.*)$/
 
   def initialize(file_path)
     super()
@@ -25,6 +26,13 @@ class Config < OpenStruct
       when GROUP
         @current_group = OpenStruct.new
         self[$1.to_sym] = @current_group
+      when SYMMETRIC_QUOTED_STRING
+        @current_group[$1.to_sym] = $3
+      when ASYMMETRIC_QUOTED_STRING
+        @current_group[$1.to_sym] = $2
+      when ARRAY
+        values = $2.split(',')
+        @current_group[$1.to_sym] = values
       when GENERIC
         key = $1.to_sym
         value = $2.to_s
@@ -36,10 +44,6 @@ class Config < OpenStruct
         end
 
         @current_group[key] = value
-      when SYMMETRIC_QUOTED_STRING
-        @current_group[$1.to_sym] = $3
-      when ASYMMETRIC_QUOTED_STRING
-        @current_group[$1.to_sym] = $2
       end
     end
   end
