@@ -22,7 +22,7 @@ describe "general load_config functionality" do
     expect(CONFIG.common.paid_users_size_limit).to eq(2147483648)
   end
 
-  it "returns a string" do
+  it "returns a string", string: true do
     # > CONFIG.ftp.name
     # returns “hello there, ftp uploading”
     expect(CONFIG.ftp.name).to eq("hello there, ftp uploading")
@@ -49,8 +49,12 @@ describe "general load_config functionality" do
     # “false”, 1, 0)
     expect(CONFIG.ftp.enabled).to eq(false)
   end
-# > CONFIG.ftp[:path]
-# returns “/etc/var/uploads”
+
+  it "supports overrides" do
+    # > CONFIG.ftp[:path]
+    # returns “/etc/var/uploads”
+    expect(CONFIG.ftp[:path]).to eq("/etc/var/uploads")
+  end
 # > CONFIG.ftp
 # returns a symbolized hash: {:name => “http uploading”,
 # !   !     !     !     !      :path => “/etc/var/uploads”,
