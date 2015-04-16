@@ -62,7 +62,7 @@ describe "general load_config functionality" do
     # !   !     !     !     !      :path => “/etc/var/uploads”,
     #!    !     !     !     !      :enabled => false}
     expect(CONFIG.ftp).to be_kind_of(Hash)
-    expect(CONFIG.ftp[:name]).to eq("http uploading")
+    expect(CONFIG.ftp[:name]).to eq("hello there, ftp uploading")
     expect(CONFIG.ftp[:path]).to eq("/etc/var/uploads")
     expect(CONFIG.ftp[:enabled]).to eq(false)
   end

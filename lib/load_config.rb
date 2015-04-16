@@ -4,7 +4,13 @@ def load_config(file_path, overrides=[])
   Config.new(file_path, overrides)
 end
 
-class Config < OpenStruct
+class GroupCollection < Hash
+  def method_missing(method_name, *args)
+    self[method_name.to_sym]
+  end
+end
+
+class Config
   GROUP =                    /^\s*\[(\w+)\]\s*$/
   ASSIGNMENT =               /^\s*(\D\S*)\s*=\s*(.+)\s*$/
   INTEGER =                  /^\d+$/
@@ -21,16 +27,21 @@ class Config < OpenStruct
     @file_path = file_path
     @current_group = nil
     @overrides = overrides.map{ |o| o.to_s }
+    @groups = GroupCollection.new
 
     parse
+  end
+
+  def method_missing(method_name, *args)
+    @groups[method_name]
   end
 
   def parse
     File.read(@file_path).each_line do |line|
     case line
       when GROUP
-        @current_group = OpenStruct.new
-        self[$1.to_sym] = @current_group
+        @current_group = GroupCollection.new
+        @groups[$1.to_sym] = @current_group
       when ASSIGNMENT
         key = $1.to_sym
         value = $2
