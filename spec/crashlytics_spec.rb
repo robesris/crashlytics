@@ -55,8 +55,15 @@ describe "general load_config functionality" do
     # returns “/etc/var/uploads”
     expect(CONFIG.ftp[:path]).to eq("/etc/var/uploads")
   end
-# > CONFIG.ftp
-# returns a symbolized hash: {:name => “http uploading”,
-# !   !     !     !     !      :path => “/etc/var/uploads”,
-#!    !     !     !     !      :enabled => false}
+
+  it "returns a symbolized hash" do
+    # > CONFIG.ftp
+    # returns a symbolized hash: {:name => “http uploading”,
+    # !   !     !     !     !      :path => “/etc/var/uploads”,
+    #!    !     !     !     !      :enabled => false}
+    expect(CONFIG.ftp).to be_kind_of(Hash)
+    expect(CONFIG.ftp[:name]).to eq("http uploading")
+    expect(CONFIG.ftp[:path]).to eq("/etc/var/uploads")
+    expect(CONFIG.ftp[:enabled]).to eq(false)
+  end
 end
