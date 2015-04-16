@@ -3,13 +3,23 @@ $LOAD_PATH.unshift(File.expand_path('../lib', __FILE__))
 require 'load_config'
 
 describe "general load_config functionality" do
-  it "reads in a conf file" do
+  before :all do
     CONFIG = load_config("./spec/files/settings.conf", ["ubuntu", :production])
+  end
 
+  it "reads in a conf file" do
     expect(CONFIG).to_not be_nil
   end
-# > CONFIG.common.paid_users_size_limit
-# returns 2147483648
+
+  it "returns a group" do
+    expect(CONFIG.common).to_not be_nil
+  end
+
+  it "returns a numeric value" do
+    # > CONFIG.common.paid_users_size_limit
+    # returns 2147483648
+    expect(CONFIG.common.paid_users_size_limit).to eq(2147483648)
+  end
 # > CONFIG.ftp.name
 # returns “hello there, ftp uploading”
 # > CONFIG.http.params
