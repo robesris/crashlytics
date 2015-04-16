@@ -32,28 +32,28 @@ class Config < OpenStruct
         @current_group = OpenStruct.new
         self[$1.to_sym] = @current_group
       when ASSIGNMENT
-        key = $1.to_s
-        value = $2.to_s
+        key = $1.to_sym
+        value = $2
 
         override = nil
-        if /\w+<([^>]+)>/ =~ key
-          override = $1.to_s 
+        if /(\w+)<([^>]+)>/ =~ key
+          key = $1.to_sym
+          override = $2
         end
 
         if @overrides.include?(override) || override.nil?
           case line
           when BOOLEAN
             value = $2
-            @current_group[$1.to_sym] = TRUE_VALUES.include?(value)
+            @current_group[key] = TRUE_VALUES.include?(value)
           when SYMMETRIC_QUOTED_STRING
-            @current_group[$1.to_sym] = $3
+            @current_group[key] = $3
           when ASYMMETRIC_QUOTED_STRING
-            @current_group[$1.to_sym] = $2
+            @current_group[key] = $2
           when ARRAY
             values = $2.split(',')
-            @current_group[$1.to_sym] = values
+            @current_group[key] = values
           when ASSIGNMENT
-            key = $1.to_sym
             value = $2.to_s
             case value
             when INTEGER
