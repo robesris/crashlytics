@@ -4,7 +4,7 @@ def load_config(file_path, overrides=[])
   Config.new(file_path, overrides)
 end
 
-class Config < OpenStruct
+class Config
   GROUP =                    /^\s*\[(\w+)\]\s*$/
   ASSIGNMENT =               /^\s*(\D\S*)\s*=\s*(.+)\s*$/
   INTEGER =                  /^\d+$/
@@ -17,12 +17,16 @@ class Config < OpenStruct
   FALSE_VALUES = ['no', 'false']
 
   def initialize(file_path, overrides)
-    super()
+    @ostruct = OpenStruct.new
     @file_path = file_path
     @current_group = nil
     @overrides = overrides.map{ |o| o.to_s }
 
     parse
+  end
+
+  def method_missing(method_name, *args)
+    @ostruct.send(method_name, *args)
   end
 
   def parse
