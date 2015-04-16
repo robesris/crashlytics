@@ -42,9 +42,13 @@ describe "general load_config functionality" do
     # returns nil
     expect(CONFIG.ftp.lastname).to be_nil
   end
-# > CONFIG.ftp.enabled
-# returns false  (permitted bool values are “yes”, “no”, “true”,
-# “false”, 1, 0)
+
+  it "returns boolean values" do
+    # > CONFIG.ftp.enabled
+    # returns false  (permitted bool values are “yes”, “no”, “true”,
+    # “false”, 1, 0)
+    expect(CONFIG.ftp.enabled).to eq(false)
+  end
 # > CONFIG.ftp[:path]
 # returns “/etc/var/uploads”
 # > CONFIG.ftp
