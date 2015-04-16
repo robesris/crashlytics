@@ -37,8 +37,11 @@ describe "general load_config functionality" do
     expect(CONFIG.http.params[2]).to eq("values")
   end
 
-# > CONFIG.ftp.lastname
-# returns nil
+  it "returns nil for undefined values" do
+    # > CONFIG.ftp.lastname
+    # returns nil
+    expect(CONFIG.ftp.lastname).to be_nil
+  end
 # > CONFIG.ftp.enabled
 # returns false  (permitted bool values are “yes”, “no”, “true”,
 # “false”, 1, 0)
